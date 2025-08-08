@@ -23,7 +23,7 @@ struct NewToDoView: View {
             }
             Button {
                 addToDo()
-            showNewTask = false
+                    showNewTask = false
             } label: {
                Text("Save")
             }
@@ -31,9 +31,11 @@ struct NewToDoView: View {
         .padding()
         
     }//body end
-    func addToDo () {
-        let toDo = ToDoItem(title: toDoItem.title, isImportant: toDoItem.isImportant)
-    }
+        func addToDo() {
+            let toDo = ToDoItem(title: toDoItem.title, isImportant: toDoItem.isImportant)
+            modelContext.insert(toDo)
+        }//func end
+    
 }//struct end
 
 #Preview {

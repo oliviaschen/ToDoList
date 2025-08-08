@@ -11,13 +11,14 @@ import SwiftData
 struct ContentView: View {
     @State private var showNewTask = false
     @Query var toDos: [ToDoItem]
+    @Environment(\.modelContext) var modelContext
     var body: some View {
         VStack {
             HStack {
                 Text("To-do List")
                     .font(.system(size: 40))
-                         .fontWeight(.black)
-                         Spacer()
+                    .fontWeight(.black)
+                Spacer()
                 Button {
                     withAnimation {
                         showNewTask = true
@@ -26,9 +27,8 @@ struct ContentView: View {
                     Text("+")
                         .font(.title)
                         .fontWeight(.bold)
-                    if showNewTask {
-                        NewToDoView(showNewTask: $showNewTask, toDoItem: ToDoItem(title: "", isImportant: false))
-                    }
+                    //come back
+                    
                 }
             }//HStack end
             .padding()
@@ -42,12 +42,25 @@ struct ContentView: View {
                     }
                     
                 }
+                .onDelete(perform: deleteToDo)
+            }.listStyle(.plain)//list end
+            
+            if showNewTask {
+                NewToDoView(showNewTask: $showNewTask, toDoItem: ToDoItem(title: "", isImportant: false))
             }
+            
         }//VStack end
     }// body end
-}//stuct end
+    func deleteToDo(at offsets: IndexSet) {
+        for offset in offsets {
+            let toDoItem = toDos[offset]
+            modelContext.delete(toDoItem)
+        }
+        }
+    }//stuct end
+    
+    #Preview {
+        ContentView()
+            .modelContainer(for: ToDoItem.self, inMemory: true)
+    }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: ToDoItem.self, inMemory: true)
-}
