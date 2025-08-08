@@ -17,14 +17,20 @@ struct ContentView: View {
                          .fontWeight(.black)
                          Spacer()
                 Button {
-
+                    withAnimation {
+                        showNewTask = true
+                    }
                 } label: {
                     Text("+")
                         .font(.title)
                         .fontWeight(.bold)
+                    if showNewTask {
+                        NewToDoView()
+                    }
                 }
             }//HStack end
             .padding()
+            Spacer()
         }//VStack end
     }// body end
 }//stuct end
